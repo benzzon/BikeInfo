@@ -1,0 +1,19 @@
+﻿@page "/"
+@inject IToastService ToastService
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<FluentButton @onclick="ShowInfo">Show toast-info</FluentButton>
+
+@code {
+
+    private void ShowInfo()
+    {
+        ToastService.ShowToast(ToastIntent.Error, "Error: ", 5000);
+
+    }
+}
