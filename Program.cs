@@ -1,4 +1,5 @@
 using BikeApp.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Logging;
@@ -32,6 +33,7 @@ namespace BikeInfo
 
             builder.Services.AddScoped<BikeService>();
             builder.Services.AddSingleton(loggerFactory);
+            builder.Services.AddSweetAlert2();
 
             await builder.Build().RunAsync();
         }

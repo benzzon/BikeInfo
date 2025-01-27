@@ -8,6 +8,7 @@
 @inject IToastService ToastService
 @inject NavigationManager NavManager
 @inject IJSRuntime JavaScript
+@inject SweetAlertService Swal
 
 <PageTitle>Home</PageTitle>
 
@@ -16,9 +17,9 @@
 <!-- Wrap FluentTextField in a container, but not needed when using the "Autofocus-attribute" of the FluentTextField -->
 <div @ref="inputContainer">
     <FluentTextField @bind-Value="manufacturerFilter"
-                     placeholder="Enter Manufacturer"
-                     @onkeydown="HandleEnterKeyPress"
-                     @oninput="HandleInputChange" Autofocus />
+    placeholder="Enter Manufacturer"
+    @onkeydown="HandleEnterKeyPress"
+    @oninput="HandleInputChange" Autofocus />
 </div>
 
 <FluentButton @onclick="LoadBikes">Search</FluentButton>
@@ -42,6 +43,8 @@ else
     </FluentDataGrid>
 }
 
+Result from dialog: @dialogResult
+
 @code {
     //private List<Bike>? motorcycles;
     private bool justStarted = true;
@@ -49,14 +52,29 @@ else
     private string manufacturerFilter = "Honda";
     private ElementReference inputContainer;
     private string toastMessage = string.Empty;
+    private bool dialogResult = false;
     // protected override async Task OnInitializedAsync()
     // {
     //     await LoadBikes();
     // }
 
-    private void ShowInfo()
+    private async Task ShowInfo()
     {
-        ToastService.ShowToast(ToastIntent.Mention, "This is just a test..", 2000);
+        //ToastService.ShowToast(ToastIntent.Mention, "This is just a test..", 2000);
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmation",
+                Text = "Do you want to continue?",
+                Icon = SweetAlertIcon.Warning,
+                Position = SweetAlertPosition.Top,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Yes",
+                CancelButtonText = "No",
+                KeydownListenerCapture = true,
+                Footer = "<a href=https://www.benzzon.se target=_blank>Read entire log here</a>"
+            });
+
+            dialogResult = !string.IsNullOrEmpty(result.Value);
     }
 
     private void HandleInputChange(ChangeEventArgs e)
