@@ -1,9 +1,9 @@
 {
   "mainAssemblyName": "BikeInfo",
   "resources": {
-    "hash": "sha256-Z14yluWjfV/xP25xcX1YQPp0nvpVIc5/rwYt/fXdcJA=",
+    "hash": "sha256-YCmTpSKxcgzKUFPozqb3exsZbSZwNaCcRSTDjdYl/Dw=",
     "fingerprinting": {
-      "BikeInfo.zafv3halc7.wasm": "BikeInfo.wasm",
+      "BikeInfo.yipkcwgqt8.wasm": "BikeInfo.wasm",
       "CurrieTechnologies.Razor.SweetAlert2.lvj7kgyo2r.wasm": "CurrieTechnologies.Razor.SweetAlert2.wasm",
       "Microsoft.AspNetCore.Components.Forms.sw6kwy7tdz.wasm": "Microsoft.AspNetCore.Components.Forms.wasm",
       "Microsoft.AspNetCore.Components.hg0aj88q6f.wasm": "Microsoft.AspNetCore.Components.wasm",
@@ -98,7 +98,7 @@
       "System.Runtime.InteropServices.JavaScript.mwa725m7o8.wasm": "sha256-Cjdb0G7x7YHp1aN8K34JIjyB6iQIEsmMfoZJJ71ZuOw="
     },
     "assembly": {
-      "BikeInfo.zafv3halc7.wasm": "sha256-OwYCHr/bD3FpwDtmr+EpdnrhDf7OiBZj1tVndQpblF0=",
+      "BikeInfo.yipkcwgqt8.wasm": "sha256-OkoHA5hXHp8iru5hx65FRQJdOfMAM/6A0uSg3mtbS/w=",
       "CurrieTechnologies.Razor.SweetAlert2.lvj7kgyo2r.wasm": "sha256-n6ubE26hJennNg6Gc9pr3BUMAuIS7CU4C94k2cw++m8=",
       "Microsoft.AspNetCore.Components.Forms.sw6kwy7tdz.wasm": "sha256-/PdrYUoyBPobZLfhIkfLjFDlymxtfi9wIQjwvApLi/U=",
       "Microsoft.AspNetCore.Components.hg0aj88q6f.wasm": "sha256-L8zv965jUGWw9ZrqjTnNMFt9dBVO6GgcxBmbrNEp+WY=",
