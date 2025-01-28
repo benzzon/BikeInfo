@@ -3,7 +3,7 @@ permissions:
   actions: write       # Necessary to cancel workflow executions
   checks: write        # Necessary to write reports
   pull-requests: write # Necessary to comment on PRs
-  contents: read
+  contents: write # write - as described on https://github.com/JamesIves/github-pages-deploy-action
   packages: write
 on:
     push:
