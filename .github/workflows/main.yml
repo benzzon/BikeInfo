@@ -24,6 +24,11 @@ jobs:
             - name: Publish .NET Core Project
               run: dotnet publish ./BikeInfo.csproj -c:Release -o release --nologo
 
+            # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
+            # (taken from https://swimburger.net/blog/dotnet/how-to-deploy-aspnet-blazor-webassembly-to-github-pages)
+            - name: Change base-tag in index.html from / to BikeInfo
+              run: sed -i 's/<base href="\/" \/>/<base href="\/BikeInfo\/" \/>/g' release/wwwroot/index.html
+      
             - name: copy index.html to 404.html
               run: cp release/wwwroot/index.html release/wwwroot/404.html
 
