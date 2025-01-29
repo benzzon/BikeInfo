@@ -3,6 +3,7 @@
 @using BikeInfo.Models
 @using System.Diagnostics
 @using Microsoft.JSInterop
+@using System.Text.RegularExpressions
 @inject BikeService BikeService
 @inject ILogger<Index> Logger
 @inject IToastService ToastService
@@ -36,11 +37,20 @@ else if (bikes != null && !bikes.Any())
 }
 else
 {
-    <FluentDataGrid TGridItem="Bike" Items="@bikes">
+    <FluentDataGrid TGridItem="Bike" Items="@bikes" OnRowClick="@(row => SelectBike(row.Item))">
         <PropertyColumn Title="Title" Property="@(p => p.Title)" />
         <PropertyColumn Title="Model" Property="@(p => p.Model)" />
         <PropertyColumn Title="Top&nbsp;Speed" Property="@(p => p.TopSpeed)" />
     </FluentDataGrid>
+}
+<br />
+
+@if (selectedBike != null)
+{
+    <div>
+        <h3> @selectedBike.Title</h3>
+        <img src="@ExtractImageUrl(selectedBike.Photo)" alt="@selectedBike.Title" style="max-width: 500px; border-radius: 10px;" />
+    </div>
 }
 
 Result from dialog: @dialogResult
@@ -53,6 +63,7 @@ Result from dialog: @dialogResult
     private ElementReference inputContainer;
     private string toastMessage = string.Empty;
     private bool dialogResult = false;
+    private Bike? selectedBike; // Store selected bike
     // protected override async Task OnInitializedAsync()
     // {
     //     await LoadBikes();
@@ -88,6 +99,10 @@ Result from dialog: @dialogResult
             await LoadBikes();
         }
     }
+    private void SelectBike(Bike bike)
+    {
+        selectedBike = bike;
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -105,6 +120,15 @@ Result from dialog: @dialogResult
         }
 
     }
+    private string ExtractImageUrl(string html)
+    {
+        if (string.IsNullOrWhiteSpace(html))
+            return string.Empty;
+
+        var match = Regex.Match(html, "src=\"([^\"]+)\"");
+        return match.Success ? "https://www.benzzon.se" + match.Groups[1].Value : string.Empty;
+    }
+
     private async Task<ElementReference?> GetInputElementAsync(ElementReference container)
     {
         // Query the container for the input element using JS Interop
