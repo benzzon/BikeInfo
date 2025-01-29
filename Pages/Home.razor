@@ -37,7 +37,8 @@ else if (bikes != null && !bikes.Any())
 }
 else
 {
-    <FluentDataGrid TGridItem="Bike" Items="@bikes" OnRowClick="@(row => SelectBike(row.Item))">
+    // Info on styling and use: https://www.fluentui-blazor.net/DataGrid#typicalusage
+    <FluentDataGrid TGridItem="Bike" Items="@bikes" OnRowClick="@(row => SelectBike(row.Item))" ShowHover="true" ResizableColumns="true">
         <PropertyColumn Title="Title" Property="@(p => p.Title)" />
         <PropertyColumn Title="Model" Property="@(p => p.Model)" />
         <PropertyColumn Title="Top&nbsp;Speed" Property="@(p => p.TopSpeed)" />

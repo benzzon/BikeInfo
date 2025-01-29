@@ -112,3 +112,27 @@ code {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+
+
+
+
+.fluent-data-grid th, .fluent-data-grid td {
+    /* Adjust padding to your preference: padding: 8px; */
+    text-align: left; /* Optional: Align text to the left */
+}
+
+.fluent-data-grid td {
+    border-right: 1px solid lightgray; /* Adjust the color */
+}
+
+/* Add vertical gridlines to the header cells */
+.fluent-data-grid th {
+    border-right: 1px solid lightgray;
+}
+
+/* Remove border from the last cell of each row */
+.fluent-data-grid td:last-child {
+    border-right: none;
+}
+
