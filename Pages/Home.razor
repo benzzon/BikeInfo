@@ -23,9 +23,15 @@
     @oninput="HandleInputChange" Autofocus />
 </div>
 
-<FluentButton @onclick="LoadBikes">Search</FluentButton>
+<FluentButton @onclick="LoadBikes" Class="add-spc">
+    <FluentIcon Value="@(new Icons.Regular.Size24.Search())" Class="add-spc" />Search
+</FluentButton>
 
-<FluentButton @onclick="ShowInfo">Show toast-info</FluentButton>
+<FluentButton @onclick="ShowInfo">
+    <FluentIcon Value="@(new Icons.Regular.Size24.Info())" />Show toast-info
+</FluentButton>
+
+
 
 @if (bikes == null && !justStarted)
 {
