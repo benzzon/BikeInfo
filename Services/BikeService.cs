@@ -21,6 +21,8 @@ namespace BikeApp.Services
             try
             {
                 _logger.LogInformation("Fetching motorcycles for manufacturer: {Manufacturer}", manufacturer);
+
+                manufacturer = (manufacturer.Trim() == "") ? "all" : manufacturer;
                 var data = await _httpClient.GetFromJsonAsync<List<Bike>>($"{BaseUrl}{manufacturer}") ?? new List<Bike>();
 
                 return data;
