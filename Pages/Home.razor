@@ -16,23 +16,31 @@
 
 <h1>Bike-info</h1>
 
-<!-- Wrap FluentTextField in a container, but not needed when using the "Autofocus-attribute" of the FluentTextField -->
-<div @ref="inputContainer">
-    <FluentTextField @bind-Value="manufacturerFilter"
-    placeholder="Enter Manufacturer"
-    @onkeydown="HandleEnterKeyPress"
-    @oninput="HandleInputChange" Autofocus />
+<div @onkeydown="HandleKeyDown">
+    <!-- Wrap FluentTextField in a container, but not needed when using the "Autofocus-attribute" of the FluentTextField -->
+    <div @ref="inputContainer">
+        <FluentTextField @bind-Value="manufacturerFilter"
+        placeholder="Enter Manufacturer"
+        @onkeydown="HandleEnterKeyPress"
+        @oninput="HandleInputChange" Autofocus />
+
+        <input spellcheck="false" class="no-border" placeholder="" />
+        <br />
+    </div>
+
+    <FluentButton @onclick="LoadBikes" Class="add-spc">
+        <FluentIcon Value="@(new Icons.Regular.Size24.Search())" Class="add-spc" />Search
+    </FluentButton>
+
+    <FluentButton @onclick="ShowInfo">
+        <FluentIcon Value="@(new Icons.Regular.Size24.Info())" />Show toast-info
+    </FluentButton>
+
+    <br /><br />
+    @displayMessage <br />
+    Timer and keys-length: @lastKeyTime - @keystrokeBuffer.Length
+
 </div>
-
-<FluentButton @onclick="LoadBikes" Class="add-spc">
-    <FluentIcon Value="@(new Icons.Regular.Size24.Search())" Class="add-spc" />Search
-</FluentButton>
-
-<FluentButton @onclick="ShowInfo">
-    <FluentIcon Value="@(new Icons.Regular.Size24.Info())" />Show toast-info
-</FluentButton>
-
-
 
 @if (bikes == null && !justStarted)
 {
@@ -61,7 +69,7 @@ else
     </div>
 }
 
-Result from dialog: @dialogResult
+
 
 @code {
     //private List<Bike>? motorcycles;
@@ -79,7 +87,6 @@ Result from dialog: @dialogResult
 
     private async Task ShowInfo()
     {
-        //ToastService.ShowToast(ToastIntent.Mention, "This is just a test..", 2000);
         var result = await Swal.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmation",
@@ -93,7 +100,8 @@ Result from dialog: @dialogResult
                 Footer = "<a href=https://www.benzzon.se target=_blank>Read entire log here</a>"
             });
 
-            dialogResult = !string.IsNullOrEmpty(result.Value);
+        dialogResult = !string.IsNullOrEmpty(result.Value);
+        ToastService.ShowToast(ToastIntent.Info, "Result from what you selected: " + dialogResult, 5000);
     }
 
     private void HandleInputChange(ChangeEventArgs e)
@@ -170,6 +178,67 @@ Result from dialog: @dialogResult
             ToastService.ShowToast(ToastIntent.Error, "Error: " + ex.Message, 5000);
 
             // Logger.LogError(ex, "Error loading motorcycles.");
+        }
+    }
+
+    private string keystrokeBuffer = string.Empty;
+    private bool capturing = false;
+    private DateTime lastKeyTime;
+    private string displayMessage = "";
+    private string prefix = "!!";  // Define the prefix as a string variable
+    private int delayTime = 1000;
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Backspace")
+        {
+            keystrokeBuffer = string.Empty;
+            displayMessage = string.Empty;
+            lastKeyTime = DateTime.MinValue;
+            return;
+        }
+
+        char key = e.Key.Length == 1 ? e.Key[0] : '\0'; // Ignore non-character keys
+
+        if (capturing)
+        {
+            keystrokeBuffer += key;
+            lastKeyTime = DateTime.UtcNow;
+        }
+        else
+        {
+            if (keystrokeBuffer.StartsWith(prefix.Substring(0, keystrokeBuffer.Length)) && key == prefix[keystrokeBuffer.Length])
+            {
+                keystrokeBuffer += key;  // Append key to the string
+                if (keystrokeBuffer.Length == prefix.Length) // If the entire prefix is captured
+                {
+                    capturing = true;
+                    lastKeyTime = DateTime.UtcNow;
+                    await StartCaptureTimer();
+                }
+            }
+            else
+            {
+                keystrokeBuffer = string.Empty; // Reset the string if sequence doesn't match prefix
+            }
+        }
+    }
+
+    private async Task StartCaptureTimer()
+    {
+        while (capturing)
+        {
+            await Task.Delay(delayTime);
+            if ((DateTime.UtcNow - lastKeyTime).TotalMilliseconds >= delayTime)
+            {
+                capturing = false;
+                string capturedSequence = keystrokeBuffer.StartsWith(prefix) ? keystrokeBuffer.Substring(prefix.Length) : keystrokeBuffer;
+                displayMessage = $"Captured: {capturedSequence}";
+                keystrokeBuffer = string.Empty; 
+
+                // Refresh UI
+                StateHasChanged();
+            }
         }
     }
 }
