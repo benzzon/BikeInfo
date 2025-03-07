@@ -37,8 +37,7 @@
     </FluentButton>
 
     <br /><br />
-    @displayMessage <br />
-    Timer and keys-length: @lastKeyTime - @keystrokeBuffer.Length
+    Debug: @lastKeyTime - @keystrokeBuffer.Length
 
 </div>
 
@@ -233,7 +232,8 @@ else
             {
                 capturing = false;
                 string capturedSequence = keystrokeBuffer.StartsWith(prefix) ? keystrokeBuffer.Substring(prefix.Length) : keystrokeBuffer;
-                displayMessage = $"Captured: {capturedSequence}";
+                ToastService.ShowToast(ToastIntent.Warning, $"Captured: {capturedSequence}", 7000);
+
                 keystrokeBuffer = string.Empty; 
 
                 // Refresh UI
