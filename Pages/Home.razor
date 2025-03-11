@@ -16,7 +16,7 @@
 
 <h1>Bike-info</h1>
 
-<div @onkeydown="HandleKeyDown">
+<div>
     <!-- Wrap FluentTextField in a container, but not needed when using the "Autofocus-attribute" of the FluentTextField -->
     <div @ref="inputContainer">
         <FluentTextField @bind-Value="manufacturerFilter"
@@ -24,7 +24,7 @@
         @onkeydown="HandleEnterKeyPress"
         @oninput="HandleInputChange" Autofocus />
 
-        <input spellcheck="false" class="no-border" placeholder="" />
+        <input spellcheck="false" class="no-border" placeholder="" @oninput="OnInput" />
         <br />
     </div>
 
@@ -37,7 +37,7 @@
     </FluentButton>
 
     <br /><br />
-    Debug: @lastKeyTime - @keystrokeBuffer.Length
+    Debug: @lastKeyTime - @inputBuffer.Length
 
 </div>
 
@@ -180,46 +180,28 @@ else
         }
     }
 
-    private string keystrokeBuffer = string.Empty;
+    private string inputBuffer = string.Empty;
     private bool capturing = false;
     private DateTime lastKeyTime;
     private string displayMessage = "";
     private string prefix = "!!";  // Define the prefix as a string variable
     private int delayTime = 1000;
 
-    private async Task HandleKeyDown(KeyboardEventArgs e)
+    private async Task OnInput(ChangeEventArgs e)
     {
-        if (e.Key == "Backspace")
-        {
-            keystrokeBuffer = string.Empty;
-            displayMessage = string.Empty;
-            lastKeyTime = DateTime.MinValue;
-            return;
-        }
+        var hidString = e.Value?.ToString();
 
-        char key = e.Key.Length == 1 ? e.Key[0] : '\0'; // Ignore non-character keys
-
-        if (capturing)
+        inputBuffer = hidString;
+        lastKeyTime = DateTime.UtcNow;
+        if (inputBuffer.StartsWith(prefix))
         {
-            keystrokeBuffer += key;
+            capturing = true;
             lastKeyTime = DateTime.UtcNow;
+            await StartCaptureTimer();
         }
         else
         {
-            if (keystrokeBuffer.StartsWith(prefix.Substring(0, keystrokeBuffer.Length)) && key == prefix[keystrokeBuffer.Length])
-            {
-                keystrokeBuffer += key;  // Append key to the string
-                if (keystrokeBuffer.Length == prefix.Length) // If the entire prefix is captured
-                {
-                    capturing = true;
-                    lastKeyTime = DateTime.UtcNow;
-                    await StartCaptureTimer();
-                }
-            }
-            else
-            {
-                keystrokeBuffer = string.Empty; // Reset the string if sequence doesn't match prefix
-            }
+            inputBuffer = string.Empty; // Reset the string if sequence doesn't match prefix
         }
     }
 
@@ -228,16 +210,16 @@ else
         while (capturing)
         {
             await Task.Delay(delayTime);
-            if ((DateTime.UtcNow - lastKeyTime).TotalMilliseconds >= delayTime)
+            if ((DateTime.UtcNow - lastKeyTime).TotalMilliseconds >= delayTime && inputBuffer != string.Empty)
             {
                 capturing = false;
-                string capturedSequence = keystrokeBuffer.StartsWith(prefix) ? keystrokeBuffer.Substring(prefix.Length) : keystrokeBuffer;
+                string capturedSequence = inputBuffer.StartsWith(prefix) ? inputBuffer.Substring(prefix.Length) : inputBuffer;
                 ToastService.ShowToast(ToastIntent.Warning, $"Captured: {capturedSequence}", 7000);
 
-                keystrokeBuffer = string.Empty; 
-
-                // Refresh UI
-                StateHasChanged();
+                inputBuffer = string.Empty; 
+                lastKeyTime = DateTime.MinValue;
+               
+                StateHasChanged(); // Refresh UI
             }
         }
     }
