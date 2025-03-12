@@ -1,0 +1,76 @@
+﻿@page "/utils"
+@using Microsoft.FluentUI.AspNetCore.Components
+@using RT.Comb
+@using UUIDNext
+@inject NavigationManager NavManager
+
+<PageTitle>Utils</PageTitle>
+
+<h1>Utils</h1>
+
+<FluentButton OnClick="@GenerateIDs">Generate IDs</FluentButton>
+
+@if (TheIDList.Any())
+{
+    <FluentDataGrid TGridItem="IDItem" Items="@TheIDList" RowHeight="40" Style="margin-top: 20px;">
+        <PropertyColumn Title="GuidType" Property="@(p => p.GuidType)" />
+        <PropertyColumn Title="Id" Property="@(p => p.Id)" />
+        <PropertyColumn Title="Created" Property="@(p => p.CreatedAt)" />
+    </FluentDataGrid>
+}
+
+<FluentCard Class="status-bar">
+    <span>-</span>
+</FluentCard>
+
+@code {
+
+    private void GenerateIDs()
+    {
+        list.Clear();
+        GenerateUuid7s();
+        GenerateCombGuids();
+        TheIDList = list.AsQueryable();
+    }
+
+    private IQueryable<IDItem> TheIDList = Enumerable.Empty<IDItem>().AsQueryable();
+
+    private void GenerateUuid7s()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            var uuid7 = Uuid.NewSequential(); // Generate UUIDv7 using UUIDNext
+
+            list.Add(new IDItem
+                {
+                    GuidType = "Uuid7",
+                    Id = uuid7.ToString(),    // Sortable string representation
+                    CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+                });
+        }
+    }
+
+    List<IDItem> list = new List<IDItem>();
+    private void GenerateCombGuids()
+    {
+        var provider = Provider.Sql; // or Provider.PostgreSql, etc.
+
+        for (int i = 0; i < 10; i++)
+        {
+            var guid = provider.Create();
+            list.Add(new IDItem
+            {
+                GuidType = "Comb",
+                Id = guid.ToString(),
+                CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+        }
+    }
+
+    public class IDItem
+    {
+        public string GuidType { get; set; }
+        public string Id { get; set; }
+        public string CreatedAt { get; set; }
+    }
+}
