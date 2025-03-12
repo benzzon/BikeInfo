@@ -24,22 +24,33 @@
         @onkeydown="HandleEnterKeyPress"
         @oninput="HandleInputChange" Autofocus />
 
-        <input spellcheck="false" class="no-border" placeholder="" @oninput="OnInput" />
+        <input spellcheck="false" class="no-border" placeholder="" @bind="HID_Input" @oninput="OnInput" />
         <br />
     </div>
 
-    <FluentButton @onclick="LoadBikes" Class="add-spc">
-        <FluentIcon Value="@(new Icons.Regular.Size24.Search())" Class="add-spc" />Search
+    <FluentButton IconStart="@(new Icons.Regular.Size16.Search())" @onclick="LoadBikes" Class="add-spc">
+        Search
     </FluentButton>
 
-    <FluentButton @onclick="ShowInfo">
-        <FluentIcon Value="@(new Icons.Regular.Size24.Info())" />Show toast-info
+    <FluentButton IconStart="@(new Icons.Regular.Size16.Info())" @onclick="ShowInfo">
+        Show toast-info
     </FluentButton>
 
     <br /><br />
-    Debug: @lastKeyTime - @inputBuffer.Length
 
 </div>
+
+<br />
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
+    <FluentTextArea style="width: 400px;" @bind-Value="inputTotal"></FluentTextArea>
+
+    <FluentButton IconStart="@(new Icons.Regular.Size16.AnimalCat())" @onclick="ClearInput">
+        Clear input
+    </FluentButton>
+
+</FluentStack>
+<br />
+
 
 @if (bikes == null && !justStarted)
 {
@@ -68,7 +79,9 @@ else
     </div>
 }
 
-
+<FluentCard Class="status-bar">
+    <span>Debug: @lastKeyTime - @inputBuffer.Length</span>
+</FluentCard>
 
 @code {
     //private List<Bike>? motorcycles;
@@ -180,7 +193,9 @@ else
         }
     }
 
+    private string HID_Input = string.Empty;
     private string inputBuffer = string.Empty;
+    private string inputTotal = string.Empty;
     private bool capturing = false;
     private DateTime lastKeyTime;
     private string displayMessage = "";
@@ -216,11 +231,18 @@ else
                 string capturedSequence = inputBuffer.StartsWith(prefix) ? inputBuffer.Substring(prefix.Length) : inputBuffer;
                 ToastService.ShowToast(ToastIntent.Warning, $"Captured: {capturedSequence}", 7000);
 
-                inputBuffer = string.Empty; 
+                inputTotal = inputTotal + capturedSequence + Environment.NewLine;
+                inputBuffer = string.Empty;
+                HID_Input = string.Empty; // Does not clear..?
                 lastKeyTime = DateTime.MinValue;
-               
+
                 StateHasChanged(); // Refresh UI
             }
         }
+    }
+    private async Task ClearInput()
+    {
+        inputTotal = string.Empty;
+        HID_Input = string.Empty;
     }
 }
