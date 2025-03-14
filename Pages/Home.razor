@@ -24,7 +24,7 @@
         @onkeydown="HandleEnterKeyPress"
         @oninput="HandleInputChange" Autofocus />
 
-        <input spellcheck="false" class="no-border" placeholder="" @bind="HID_Input" @oninput="OnInput" />
+        <input @ref="scanInputRef" spellcheck="false" class="no-border" placeholder="" @bind="HID_Input" @oninput="OnInput" @onfocus="OnScanInputFocus" @onfocusout="OnScanInputFocusOut" />
         <br />
     </div>
 
@@ -36,13 +36,14 @@
         Show toast-info
     </FluentButton>
 
+    <FluentSwitch Style="margin-left: 1em;" @bind-Value="@BarscanEnabled">Barscan</FluentSwitch>
     <br /><br />
 
 </div>
 
 <br />
 <FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
-    <FluentTextArea style="width: 400px;" @bind-Value="inputTotal"></FluentTextArea>
+    <FluentTextArea @ref="areaScanTotalRef" style="width: 400px;" @bind-Value="inputScanTotal"></FluentTextArea>
 
     <FluentButton IconStart="@(new Icons.Regular.Size16.AnimalCat())" @onclick="ClearInput">
         Clear input
@@ -193,14 +194,39 @@ else
         }
     }
 
-    private string HID_Input = string.Empty;
+    private string? HID_Input = string.Empty;
     private string inputBuffer = string.Empty;
-    private string inputTotal = string.Empty;
+    private string inputScanTotal = string.Empty;
     private bool capturing = false;
     private DateTime lastKeyTime;
     private string displayMessage = "";
     private string prefix = "!!";  // Define the prefix as a string variable
     private int delayTime = 1000;
+    private bool _barscanEnabled;
+    private ElementReference scanInputRef;
+    private FluentTextArea areaScanTotalRef;
+
+    private bool BarscanEnabled
+    {
+        get => _barscanEnabled;
+        set
+        {
+            if (_barscanEnabled != value)
+            {
+                _barscanEnabled = value;
+
+                if (_barscanEnabled == true)
+                {
+                    ToastService.ShowToast(ToastIntent.Success, "Barscan enabled", 5000);
+                    scanInputRef.FocusAsync();
+                }
+                else
+                {
+                    HID_Input = string.Empty;
+                }
+            }
+        }
+    }
 
     private async Task OnInput(ChangeEventArgs e)
     {
@@ -219,6 +245,15 @@ else
             inputBuffer = string.Empty; // Reset the string if sequence doesn't match prefix
         }
     }
+    private async Task OnScanInputFocus()
+    {
+        BarscanEnabled = true;
+    }
+    private async Task OnScanInputFocusOut()
+    {
+        BarscanEnabled = false;
+        ToastService.ShowToast(ToastIntent.Info, "Barscan deactivated..", 5000);
+    }
 
     private async Task StartCaptureTimer()
     {
@@ -231,18 +266,20 @@ else
                 string capturedSequence = inputBuffer.StartsWith(prefix) ? inputBuffer.Substring(prefix.Length) : inputBuffer;
                 ToastService.ShowToast(ToastIntent.Warning, $"Captured: {capturedSequence}", 7000);
 
-                inputTotal = inputTotal + capturedSequence + Environment.NewLine;
+                inputScanTotal = inputScanTotal + capturedSequence + Environment.NewLine;
                 inputBuffer = string.Empty;
-                HID_Input = string.Empty; // Does not clear..?
-                lastKeyTime = DateTime.MinValue;
+                HID_Input = string.Empty; // Does not seem to work..?
+                //areaScanTotalRef.FocusAsync();
 
+                lastKeyTime = DateTime.MinValue;
                 StateHasChanged(); // Refresh UI
+
             }
         }
     }
     private async Task ClearInput()
     {
-        inputTotal = string.Empty;
+        inputScanTotal = string.Empty;
         HID_Input = string.Empty;
     }
 }
