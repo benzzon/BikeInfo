@@ -1,9 +1,9 @@
 {
   "mainAssemblyName": "BikeInfo",
   "resources": {
-    "hash": "sha256-iHAqgaYanOBSG7oYMgcwGLMjv57eS6tXhf8uXNgzET8=",
+    "hash": "sha256-4qm9YRBYdzcUGh6U8vzdUZ0PAN780Kv7IrQE0B1kY0U=",
     "fingerprinting": {
-      "BikeInfo.sovghzcmrr.wasm": "BikeInfo.wasm",
+      "BikeInfo.638rp2jsc9.wasm": "BikeInfo.wasm",
       "CurrieTechnologies.Razor.SweetAlert2.lvj7kgyo2r.wasm": "CurrieTechnologies.Razor.SweetAlert2.wasm",
       "Microsoft.AspNetCore.Components.Forms.sw6kwy7tdz.wasm": "Microsoft.AspNetCore.Components.Forms.wasm",
       "Microsoft.AspNetCore.Components.ncs3bj3lvm.wasm": "Microsoft.AspNetCore.Components.wasm",
@@ -19,7 +19,7 @@
       "Microsoft.Extensions.Options.1cu2gj5cau.wasm": "Microsoft.Extensions.Options.wasm",
       "Microsoft.Extensions.Primitives.mytv1lpnrg.wasm": "Microsoft.Extensions.Primitives.wasm",
       "Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.1a4a9gwuji.wasm": "Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.wasm",
-      "Microsoft.FluentUI.AspNetCore.Components.n6wk6pexy2.wasm": "Microsoft.FluentUI.AspNetCore.Components.wasm",
+      "Microsoft.FluentUI.AspNetCore.Components.v5bjwvgh9a.wasm": "Microsoft.FluentUI.AspNetCore.Components.wasm",
       "Microsoft.JSInterop.qn4bv3rejh.wasm": "Microsoft.JSInterop.wasm",
       "Microsoft.JSInterop.WebAssembly.8eb000j8w7.wasm": "Microsoft.JSInterop.WebAssembly.wasm",
       "netstandard.eoxj1hbg61.wasm": "netstandard.wasm",
@@ -64,7 +64,7 @@
       "System.Private.Uri.fxu92adyjj.wasm": "System.Private.Uri.wasm",
       "System.Private.Xml.10tfrhcmvl.wasm": "System.Private.Xml.wasm",
       "System.Runtime.InteropServices.JavaScript.0tgicm7vjk.wasm": "System.Runtime.InteropServices.JavaScript.wasm",
-      "System.Runtime.f7nvk0htsj.wasm": "System.Runtime.wasm",
+      "System.Runtime.grm0rgygxn.wasm": "System.Runtime.wasm",
       "System.Security.Claims.mkqj3my28n.wasm": "System.Security.Claims.wasm",
       "System.Security.Cryptography.cqzdrgd33f.wasm": "System.Security.Cryptography.wasm",
       "System.Security.Principal.Windows.u0eeh6lijy.wasm": "System.Security.Principal.Windows.wasm",
@@ -102,7 +102,7 @@
       "System.Runtime.InteropServices.JavaScript.0tgicm7vjk.wasm": "sha256-bAbPaONHne7R1hItHoY8/SYWlDb84JZQ1cxd1Y+tJn0="
     },
     "assembly": {
-      "BikeInfo.sovghzcmrr.wasm": "sha256-lJ5mSt/zoUvEZCnre6ao0OOKbRyaLI/st+NnapbOs7Y=",
+      "BikeInfo.638rp2jsc9.wasm": "sha256-Tm15MoQIcEOb45n1OTzwBCvkA0L7hkaRAYByDmHQrls=",
       "CurrieTechnologies.Razor.SweetAlert2.lvj7kgyo2r.wasm": "sha256-n6ubE26hJennNg6Gc9pr3BUMAuIS7CU4C94k2cw++m8=",
       "Microsoft.AspNetCore.Components.Forms.sw6kwy7tdz.wasm": "sha256-/PdrYUoyBPobZLfhIkfLjFDlymxtfi9wIQjwvApLi/U=",
       "Microsoft.AspNetCore.Components.ncs3bj3lvm.wasm": "sha256-RzlWueGhkKsGPofch6Teqj1Ew/VpqxxXCw321uPq1yI=",
@@ -118,7 +118,7 @@
       "Microsoft.Extensions.Options.1cu2gj5cau.wasm": "sha256-720xjccNSC/ixI8d5toBVmd5GGEzQAIN2LMqBmflaJw=",
       "Microsoft.Extensions.Primitives.mytv1lpnrg.wasm": "sha256-kvH0PWaEihTjfJSm4b+K3UHAQau8H9u9OsWrrZj/Chw=",
       "Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.1a4a9gwuji.wasm": "sha256-12JPxavhOF68IfPY35Nwjuc0CxaCbV+34Fz60cho+YA=",
-      "Microsoft.FluentUI.AspNetCore.Components.n6wk6pexy2.wasm": "sha256-78mlpfMXRN56D1H1oBMttkHpcdHbWMcxYMCz9ZBurFM=",
+      "Microsoft.FluentUI.AspNetCore.Components.v5bjwvgh9a.wasm": "sha256-Q/t/kem0cMliI95HgSfp80hn2SwxJ0UkIcsJp+dKiT8=",
       "Microsoft.JSInterop.qn4bv3rejh.wasm": "sha256-VocXMx4EuetU6AS/DCC5yLWVCaJ9UhIpEsmmBX4JP1s=",
       "Microsoft.JSInterop.WebAssembly.8eb000j8w7.wasm": "sha256-sGms9Oai1ztzgfMsqBvmeKwa5ZyGWr/AEXr6thw0lso=",
       "netstandard.eoxj1hbg61.wasm": "sha256-wplv561KoX75rh2Uy1yHtmwGIc7IFv7ec1YLRX9AoRo=",
@@ -161,7 +161,7 @@
       "System.ObjectModel.olh7x4r7b7.wasm": "sha256-JOrwuHuPMNCEbwoM11uvBpsb8HcX8kuAeih6tRYk0yM=",
       "System.Private.Uri.fxu92adyjj.wasm": "sha256-LQFEoJlveLieU60ChCBgPjXcGQXziWAG1+RO48/PRpE=",
       "System.Private.Xml.10tfrhcmvl.wasm": "sha256-kV9lXxj20hxoIy+WqbSAQwr9RNDlgLLCAZZjvGyaJ54=",
-      "System.Runtime.f7nvk0htsj.wasm": "sha256-O2ucjndTe8Z4Oefoc70SYC4Yi20BrYjrDCjlRr4J/zk=",
+      "System.Runtime.grm0rgygxn.wasm": "sha256-xDFAnnHskEqRDEB2cVX1/Xpr9wcraE0KOX/1ccyHNp8=",
       "System.Security.Claims.mkqj3my28n.wasm": "sha256-Rqh1IpRyOlBbHRwpMkKuWMwH5AZAemo0+m+CN2YMCzg=",
       "System.Security.Cryptography.cqzdrgd33f.wasm": "sha256-JMEFyQz3qadNYiy9e/cf9xWyXPNfhtDV/d3JZGitsCA=",
       "System.Security.Principal.Windows.u0eeh6lijy.wasm": "sha256-fpfVFGWjnK182B/vObM/tMdBjip+9/4SYKdsptz5e38=",
