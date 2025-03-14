@@ -36,7 +36,7 @@
         Show toast-info
     </FluentButton>
 
-    <FluentSwitch Style="margin-left: 1em;" @bind-Value="@BarscanEnabled">Barscan</FluentSwitch>
+    <FluentSwitch id="theSwitch" Style="margin-left: 1em;" @bind-Value="@BarscanEnabled" @onclick="BarscanSwitchClick">Barscan</FluentSwitch>
     <br /><br />
 
 </div>
@@ -203,6 +203,7 @@ else
     private string prefix = "!!";  // Define the prefix as a string variable
     private int delayTime = 1000;
     private bool _barscanEnabled;
+    private bool SuppressFocusOutEvent = false;
     private ElementReference scanInputRef;
     private FluentTextArea areaScanTotalRef;
 
@@ -211,20 +212,17 @@ else
         get => _barscanEnabled;
         set
         {
-            if (_barscanEnabled != value)
-            {
-                _barscanEnabled = value;
-
-                if (_barscanEnabled == true)
-                {
-                    ToastService.ShowToast(ToastIntent.Success, "Barscan enabled", 5000);
-                    scanInputRef.FocusAsync();
-                }
-                else
-                {
-                    HID_Input = string.Empty;
-                }
-            }
+            _barscanEnabled = value;
+        }
+    }
+    private void BarscanSwitchClick()
+    {
+        if (BarscanEnabled)
+        {
+            //SuppressFocusOutEvent = true;
+            ToastService.ShowToast(ToastIntent.Success, "Barscan enabled", 5000);
+            BarscanEnabled = true;
+            scanInputRef.FocusAsync();
         }
     }
 
@@ -247,12 +245,17 @@ else
     }
     private async Task OnScanInputFocus()
     {
-        BarscanEnabled = true;
     }
     private async Task OnScanInputFocusOut()
     {
+        if (SuppressFocusOutEvent)
+        {
+        }
+        else
+        {
         BarscanEnabled = false;
         ToastService.ShowToast(ToastIntent.Info, "Barscan deactivated..", 5000);
+        }
     }
 
     private async Task StartCaptureTimer()
